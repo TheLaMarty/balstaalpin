@@ -1,14 +1,22 @@
 package com.balstaalpin.balstaalpin.model;
 
-import javax.persistence.*;
-import java.sql.Date;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+@Transactional
 @Entity
-@Table(name="course")
+@Table(name = "course")
 public class Course {
 
     @Id
-    @Column(name = "courseid", updatable = false)
+    @GeneratedValue
+    @Column(name = "courseid")
     private Integer courseid;
 
     @Column(name = "coursenameid")
@@ -17,23 +25,26 @@ public class Course {
     @Column(name = "name")
     private String name;
 
+    @Temporal(TemporalType.DATE)
     @Column(name = "startdate")
     private Date startdate;
 
+    @Temporal(TemporalType.DATE)
     @Column(name = "enddate")
     private Date enddate;
 
+    @JoinTable(name = "class", joinColumns = {@JoinColumn(name = "courseid")},
+            inverseJoinColumns = {@JoinColumn(name = "juniorid")})
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @JsonIgnore
+    public Set<Junior> juniors = new HashSet<>();
 
     protected Course() {
 
     }
 
-    public Course(Integer courseid, Integer coursenameid, String name, String memberId, Date startdate, Date enddate) {
-        this.courseid = courseid;
-        this.coursenameid = coursenameid;
+    public Course(String name) {
         this.name = name;
-        this.startdate = startdate;
-        this.enddate = enddate;
     }
 
     public Integer getCourseid() {
@@ -74,6 +85,22 @@ public class Course {
 
     public void setEnddate(Date enddate) {
         this.enddate = enddate;
+    }
+
+    public Set<Junior> getJuniors() {
+        return juniors;
+    }
+
+    public void setJuniors(Set<Junior> juniors) {
+        this.juniors = juniors;
+    }
+
+    public void addJunior(Junior junior) {
+        juniors.add(junior);
+    }
+
+    public void removeJunior(Junior junior) {
+        juniors.remove(junior);
     }
 
     @Override

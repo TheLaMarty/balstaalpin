@@ -3,16 +3,12 @@ package com.balstaalpin.balstaalpin.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name="member")
+@Table(name = "member")
 public class Member {
 
     @Id
-    @SequenceGenerator(name="members_member_id_seq",
-            sequenceName="members_member_id_seq",
-            allocationSize=1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator="members_member_id_seq")
-    @Column(name = "memberid", updatable=false)
+    @GeneratedValue
+    @Column(name = "memberid")
     private Integer memberid;
 
     @Column(name = "socialsecuritynumber")
@@ -30,7 +26,7 @@ public class Member {
     @Column(name = "phone")
     private String phone;
 
-    protected Member(){
+    protected Member() {
 
     }
 

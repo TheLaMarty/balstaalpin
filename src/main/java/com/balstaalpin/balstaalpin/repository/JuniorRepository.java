@@ -4,12 +4,13 @@ import com.balstaalpin.balstaalpin.model.Junior;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-import java.util.List;
-
 @RepositoryRestResource
-public interface JuniorRepository extends JpaRepository<Junior, Integer> {
+public interface JuniorRepository extends JpaRepository<Junior, Long> {
 
-    List<Junior> findByFirstName(String firstName);
+    Junior findByFirstName(String firstName);
 
     Junior findByLastName(String lastName);
+
+    Junior findByjuniorid(Long juniorid);
+
 }

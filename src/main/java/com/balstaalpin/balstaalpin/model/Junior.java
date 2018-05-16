@@ -1,24 +1,19 @@
 package com.balstaalpin.balstaalpin.model;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.*;
+import java.sql.Date;
 
+@Transactional
 @Entity
 @Table(name = "junior")
 public class Junior {
 
-    @JoinTable(
-            name = "class",
-            joinColumns = @JoinColumn(name = "juniorid", referencedColumnName = "juniorid"),
-            inverseJoinColumns = @JoinColumn(name = "course", referencedColumnName = "courseid"))
-
     @Id
-    @SequenceGenerator(name = "junior_juniorId_seq",
-            sequenceName = "junior_juniorId_seq",
-            allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator = "junior_juniorId_seq")
-    @Column(name = "juniorid", updatable = false)
-    private Integer juniorId;
+    @GeneratedValue
+    @Column(name = "juniorid")
+    private Long juniorid;
 
     @Column(name = "firstname")
     private String firstName;
@@ -26,26 +21,37 @@ public class Junior {
     @Column(name = "lastname")
     private String lastName;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "memberid", nullable = false)
-    private Member memberid;
+    @Column(name = "memberid")
+    private Integer memberid;
+
+    @Column(name = "birthdate")
+    private Date birthdate;
+
+    @Column(name = "createdat", nullable = false, updatable = false)
+    @CreatedDate
+    private Date createdAt;
 
     protected Junior() {
 
     }
 
-    public Junior(String firstName, String lastName, Member memberid) {
+    public Junior(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.memberid = memberid;
     }
 
-    public Integer getId() {
-        return juniorId;
+    public Junior(String firstName, String lastName, Date birthdate) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthdate = birthdate;
     }
 
-    public void setId(Integer id) {
-        this.juniorId = id;
+    public Long getId() {
+        return juniorid;
+    }
+
+    public void setId(Long id) {
+        this.juniorid = id;
     }
 
     public String getFirstName() {
@@ -64,25 +70,40 @@ public class Junior {
         this.lastName = lastName;
     }
 
-    public Integer getJuniorId() {
-        return juniorId;
+    public Long getJuniorid() {
+        return juniorid;
     }
 
-    public void setJuniorId(Integer juniorId) {
-        this.juniorId = juniorId;
+    public void setJuniorid(Long juniorid) {
+        this.juniorid = juniorid;
     }
 
-    public Member getMemberid() {
+    public Integer getMemberid() {
         return memberid;
     }
 
-    public void setMemberid(Member memberid) {
+    public void setMemberid(Integer memberid) {
         this.memberid = memberid;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate(Date birthdate) {
+        this.birthdate = birthdate;
     }
 
     @Override
     public String toString() {
         return String.format(firstName + " " + lastName);
     }
-
 }
